@@ -43,7 +43,7 @@ jobs:
         server_address: smtp.gmail.com
         server_port: 587
         username: 123rajubhovi@gmail.com
-        password: Raju@123
+        password: tymgrgiyjqyuatqe
         subject: "Deployment Status - Success"
         to: rajubhovi999@gmail.com
         from: 123rajubhovi@gmail.com
