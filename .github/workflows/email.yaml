@@ -44,10 +44,11 @@ jobs:
         server_port: 587
         username: 123rajubhovi@gmail.com
         password: tymgrgiyjqyuatqe
-        subject: "Deployment Status - Success"
+        subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+        body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
         to: rajubhovi999@gmail.com
         from: 123rajubhovi@gmail.com
-        body: "The deployment was successful."
+        
 
     - name: Send Email Notification - Failure
       if: failure()
