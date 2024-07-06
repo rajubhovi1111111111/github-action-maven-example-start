@@ -10,7 +10,7 @@ COPY src ./src
 RUN mvn clean package
 
 # Use an official OpenJDK image as the base image for the runtime
-FROM openjdk:14-jre-slim
+FROM openjdk:11-jre-slim
 WORKDIR /app
 
 # Copy the jar file from the build stage
