@@ -1,0 +1,65 @@
+name: Build and Deploy to EC2 using Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: java-app
+          path: |
+            target/simple-java.jar
+            Dockerfile
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: java-app
+
+      - name: Copy files via SSH
+        uses: appleboy/scp-action@v0.1.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          source: |
+            simple-java.jar
+            Dockerfile
+          target: "/home/ec2-user/simple-java/"
+
+      - name: Execute remote commands via SSH
+        uses: appleboy/ssh-action@v0.1.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd /home/ec2-user/simple-java
+            docker build -t simple-java:latest .
+            docker stop simple-java || true
+            docker rm simple-java || true
+            docker run -d --name simple-java -p 8080:8080 simple-java:latest
