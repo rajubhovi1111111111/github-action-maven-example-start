@@ -14,7 +14,7 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 
 # Copy the jar file from the build stage
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/github-action-maven-tutorial-1.0-SNAPSHOT-jar-with-dependencies.jar app.jar
 
 # Expose the application port
 EXPOSE 8080
