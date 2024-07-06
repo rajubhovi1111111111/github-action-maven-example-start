@@ -1,5 +1,5 @@
 # Use an official Maven image to build the app
-FROM maven:3.8.1-openjdk-11 AS build
+FROM maven:3.6.3-openjdk-14 AS build
 WORKDIR /app
 
 # Copy the pom.xml file and the source code
@@ -10,7 +10,7 @@ COPY src ./src
 RUN mvn clean package
 
 # Use an official OpenJDK image as the base image for the runtime
-FROM openjdk:11-jre-slim
+FROM openjdk:14-jre-slim
 WORKDIR /app
 
 # Copy the jar file from the build stage
