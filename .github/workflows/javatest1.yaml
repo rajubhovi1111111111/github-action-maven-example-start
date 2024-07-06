@@ -52,5 +52,5 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         port: 22
         script: |
-          sudo docker load -i /home/ubuntu/myapp.tar
+          sudo docker load -i /home/ubuntu/myapp.tar/myapp.tar
           sudo docker run -d --name myapp -p 8080:8080 myapp:latest
